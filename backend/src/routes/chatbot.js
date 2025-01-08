@@ -9,6 +9,7 @@ import {
 
 const router = express.Router();
 
+// POST 요청 처리
 router.post("/", async (req, res) => {
   try {
     const { query } = req.body;
@@ -40,6 +41,15 @@ router.post("/", async (req, res) => {
     console.error("Error processing request:", error);
     res.status(500).json({ error: "Internal server error" });
   }
+});
+
+// GET 요청 처리 (dummy 데이터)
+router.get("/", (req, res) => {
+  const dummyResponse = {
+    message: "This is a dummy response for GET method.",
+    status: "success",
+  };
+  res.json(dummyResponse);
 });
 
 export default router;
