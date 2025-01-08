@@ -3,27 +3,32 @@ import PropTypes from "prop-types";
 
 const ChatMessage = ({ message }) => {
   const renderCafeInfo = (cafeData) => {
+    console.log(cafeData);
+    if (cafeData.name === "모르겠어요") {
+      return (
+        <div className="cafe-info">더 구체적인 정보를 알려주시겠어요?</div>
+      );
+    }
     return (
       <div className="cafe-info">
         <h3 className="cafe-name">{cafeData.name}</h3>
         <div className="cafe-details">
           <p className="cafe-address">
-            <span className="label">📍 주소:</span> {cafeData.address}
+            <span className="label">📍 주소:</span> {cafeData.road_address}
           </p>
           <p className="cafe-station">
-            <span className="label">🚇 가까운 역:</span>{" "}
-            {cafeData.nearest_station}
+            <span className="label">🚇 가까운 역:</span> {cafeData.subway}
           </p>
           <p className="cafe-description">
-            <span className="label">✨ 설명:</span> {cafeData.description}
+            <span className="label">✨ 설명:</span> {cafeData.diora_info}
           </p>
-          <div className="cafe-features">
-            <span className="label">🏷️ 특징:</span>
-            <ul>
-              {cafeData.features.map((feature, index) => (
-                <li key={index}>{feature}</li>
-              ))}
-            </ul>
+          <div className="cafe-points">
+            <span className="label">🔹 알아야 할 3가지 Point!</span>
+            <ol>
+              <li>{cafeData.point_1}</li>
+              <li>{cafeData.point_2}</li>
+              <li>{cafeData.point_3}</li>
+            </ol>
           </div>
           <p className="cafe-hashtags">
             <span className="label">🔖 태그:</span> {cafeData.hashtags}
