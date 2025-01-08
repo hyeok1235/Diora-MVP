@@ -1,0 +1,175 @@
+/* frontend/src/styles/global.css */
+:root {
+  --gradient-primary: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+  --gradient-secondary: linear-gradient(135deg, #fad0c4 0%, #ffd1ff 100%);
+}
+
+body {
+  margin: 0;
+  font-family: "Noto Sans KR", sans-serif;
+  background: var(--gradient-primary);
+  min-height: 100vh;
+  display: flex; /* 중앙 정렬 */
+  justify-content: center;
+  align-items: center;
+}
+
+.app {
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  color: #333;
+  font-size: 2.5rem;
+  margin: 0;
+}
+
+.chat-container {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 70vh;
+}
+
+.message {
+  margin: 10px 0;
+}
+
+.message.user {
+  margin-left: auto;
+}
+
+.message.bot {
+  margin-right: auto;
+}
+
+.message-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.message.user .message-content {
+  flex-direction: row-reverse;
+}
+
+.text {
+  background: white;
+  padding: 12px 16px;
+  border-radius: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.user .text {
+  background: var(--gradient-secondary);
+  color: #333;
+}
+
+.bot-icon,
+.user-icon {
+  font-size: 24px;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px; /* 버튼과 input 간격 */
+  width: 90%; /* 전체 너비를 차지하도록 설정 */
+  margin: 10px;
+}
+
+.input-container input {
+  flex-grow: 1; /* 입력 필드가 가능한 넓게 */
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #f9f9f9; /* 밝은 회색 배경 */
+  font-size: 16px;
+  color: #333;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+  outline: none;
+  transition: all 0.2s ease-in-out; /* 부드러운 전환 효과 */
+}
+
+.input-container input:focus {
+  background: white;
+  border-color: #8ec5fc; /* 포커스 시 테두리 색 강조 */
+  box-shadow: 0 4px 8px rgba(50, 150, 250, 0.2); /* 포커스 시 그림자 추가 */
+}
+
+.input-container button {
+  padding: 12px 20px;
+  background: var(--gradient-primary); /* 버튼 그라데이션 */
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 버튼 그림자 */
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.input-container button:hover {
+  transform: scale(1.02); /* 버튼 호버 시 크기 확대 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* 버튼 호버 시 그림자 강화 */
+}
+
+.input-container button:disabled {
+  background: #cccccc; /* 비활성화 시 버튼 색상 */
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.chat-interface {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* 메시지 영역과 입력 칸의 공간 분리 */
+  align-items: center;
+  width: 50vw;
+  height: 85vh; /* 화면 높이의 90% */
+  background-color: #f9f9f9; /* 요청 입력 칸과 동일 배경 */
+  border-radius: 20px;
+  box-shadow: 0px 8px 32px rgba(31, 38, 135, 0.15);
+  overflow: hidden;
+  padding: 0 10px;
+}
+
+.messages-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* 입력 칸과 분리된 메시지 영역 비율 확보 */
+  width: 100%;
+  overflow-y: auto; /* 메시지 스크롤 */
+  padding: 15px;
+  background-color: #ffffff; /* 흰 배경 */
+  border: 1px solid #ddd; /* 입력 칸과 유사한 테두리 */
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.loading {
+  text-align: center;
+  color: #666;
+  margin-top: 10px;
+}
+
+.message-input {
+  width: 100%;
+  padding: 15px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+}
