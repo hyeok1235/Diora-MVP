@@ -43,9 +43,10 @@ const SYSTEM_TEMPLATE = `SYSTEM_TEMPLATE:
    - point_1, point_2, point_3: 카페 특징
    - subway: 카페 근처 지하철역
 
-3. retrieve된 정보의 subway(지하철역)와 query의 "지하철역명"을 비교하여 가까운 역을 기준으로 카페를 추천합니다. 
+3. retrieve된 정보의 subway(지하철역)와 query의 "지하철역명"을 비교하여 가까운 역을 기준으로 카페를 추천합니다.
    - 동일한 지하철역이 있을 경우, 이를 우선적으로 추천합니다.
    - 지하철역이 다를 경우, 위치 정보(road_address)로 가장 가까운 카페를 선택합니다.
+   - **조건에 부합하는 카페가 없을 경우, retrieve된 데이터 중 하나를 무작위로 반환합니다.**
 
 4. 추천되는 카페의 정보는 수정 없이 raw한 데이터를 JSON 형식으로 출력합니다. 
 
@@ -55,7 +56,7 @@ const SYSTEM_TEMPLATE = `SYSTEM_TEMPLATE:
    - 카페 정보는 수정하지 않고 retrieve된 데이터를 그대로 사용합니다.
    - 추천 이유나 추가 설명은 출력하지 않습니다.
 
----------- 
+----------
 {context}`;
 
 // Chat Model
@@ -69,7 +70,8 @@ export async function extractLocationFromQuery(query) {
   const locationPrompt = ChatPromptTemplate.fromMessages([
     [
       "system",
-      "이 질문에서 지하철역이나 지역 이름이 있다면 정확히 위치만 출력해주세요. 예: 홍대입구역",
+      `이 질문에서 지하철역이나 지역 이름이 있다면 정확히 위치만 출력해주세요. 예: 홍대입구역
+      만약 추출하기 어렵다면, 없음 이라고 출력해주세요.`,
     ],
     ["human", "{question}"],
   ]);

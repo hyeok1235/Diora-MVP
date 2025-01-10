@@ -46,11 +46,18 @@ body {
 
 .message.user {
   margin-left: auto;
+  color: black;
 }
 
 .message.bot {
   margin-right: auto;
+  color: black;
 }
+
+/* [data-theme="dark"] .message.user, 
+[data-theme="dark"] .message.bot {
+  color: white;
+} */
 
 .message-content {
   display: flex;
