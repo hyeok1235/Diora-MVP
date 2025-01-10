@@ -173,3 +173,38 @@ body {
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   margin-top: 10px;
 }
+
+/* Add responsive styles using media queries */
+@media (max-width: 768px) {
+  .chat-interface {
+    width: 85vw; /* Occupies most of the screen width on mobile */
+    height: 85vh; /* Occupies most of the screen height on mobile */
+    border-radius: 10px; /* Slightly smaller border radius for compact devices */
+    padding: 0 5px; /* Reduce padding for mobile */
+  }
+
+  .messages-container {
+    padding: 10px; /* Reduce padding for better spacing on smaller screens */
+    font-size: 14px; /* Adjust font size for readability on smaller screens */
+  }
+
+  .input-container {
+    width: 100%; /* Use full width on mobile */
+    margin: 5px; /* Reduce margin to fit better */
+    gap: 5px; /* Reduce gap between button and input field */
+  }
+
+  .input-container input {
+    padding: 10px; /* Slightly reduce padding */
+    font-size: 14px; /* Adjust font size for mobile */
+  }
+
+  .input-container button {
+    padding: 10px 15px; /* Reduce padding for buttons */
+    font-size: 14px; /* Adjust font size for mobile */
+  }
+
+  .header h1 {
+    font-size: 2rem; /* Reduce header font size for mobile */
+  }
+}
