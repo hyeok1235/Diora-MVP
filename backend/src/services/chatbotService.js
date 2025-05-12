@@ -70,8 +70,21 @@ export async function extractLocationFromQuery(query) {
   const locationPrompt = ChatPromptTemplate.fromMessages([
     [
       "system",
-      `이 질문에서 지하철역이나 지역 이름이 있다면 정확히 위치만 출력해주세요. 예: 홍대입구역
-      만약 추출하기 어렵다면, 없음 이라고 출력해주세요.`,
+      `이 질문에서 지하철역, 지역 이름, 동네 이름 등 위치와 관련된 정보를 정확히 식별하여 하나만 출력해주세요. 아래 기준을 따르세요:
+
+      1. 만약 질문에 **지하철역 이름**이 포함되어 있다면, 역 이름만 출력하세요. 예: '안암동' -> '안암역'
+      2. 질문에 **지하철역 이름**이 명확히 없고, 지역명(동, 구 등)만 있다면 해당 지역명을 출력하세요. 예: '안암동 근처 카페' -> '안암동'
+      3. 두 가지 경우 모두 해당하지 않거나, 위치가 명확하지 않다면 '없음'을 출력하세요.
+      4. 항상 사람이 이해할 수 있는 한국의 위치명을 정확히 추출해주세요.
+
+      예시:
+      - '홍대 근처 맛집 추천' -> '홍대입구역'
+      - '강남역에서 가까운 곳 추천해줘' -> '강남역'
+      - '연남동의 핫플' -> '연남동'
+      - '서울에서 가장 예쁜 카페' -> '서울'
+      - '다른 나라 위치' 또는 추출이 어려운 경우 -> '없음'
+
+      `,
     ],
     ["human", "{question}"],
   ]);
@@ -180,37 +193,26 @@ export async function getRoadAddress(name) {
   return null;
 }
 
-// CSV 파일 읽어오기
-function loadSubwayData() {
-  return new Promise((resolve, reject) => {
-    const subwayData = [];
-    fs.createReadStream("./references/seoul_subway_with_addresses.csv")
-      .pipe(csvParser())
-      .on("data", (row) => {
-        // Normalize keys by trimming spaces
-        const cleanedRow = {};
-        for (const [key, value] of Object.entries(row)) {
-          const normalizedKey = key.trim();
-          cleanedRow[normalizedKey] = value.trim(); // Trim values as well
-        }
-        subwayData.push(cleanedRow);
-      })
-      .on("end", () => resolve(subwayData))
-      .on("error", (error) => reject(error));
-  });
-}
-
 // 지하철역 주소 찾기
 export async function findSubwayRoadAddress(query) {
-  const subwayData = await loadSubwayData();
+  // 1. 벡터 스토어 경로 및 초기화
+  const subwayVectorStorePath = "./references/subway_info_vectorstore";
+  const subwayVectorStore = await HNSWLib.load(
+    subwayVectorStorePath,
+    new OpenAIEmbeddings() // OpenAI 임베딩 사용
+  );
 
-  const subwayStation = subwayData.find((row) => {
-    return row["name"].includes(query);
-  });
+  // 2. 검색할 결과 개수 설정
+  const k = 1; // 가장 유사한 1개만 반환
+  const subwayVectorStoreRetriever = subwayVectorStore.asRetriever({ k });
 
-  if (subwayStation) {
-    return subwayStation || null;
+  // 3. 쿼리를 통해 검색 수행
+  const results = await subwayVectorStoreRetriever.getRelevantDocuments(query);
+
+  // 4. 결과 처리
+  if (results.length > 0) {
+    return results[0]; // 가장 유사한 지하철역 정보 반환
   } else {
-    return null;
+    return null; // 검색 결과가 없으면 null 반환
   }
 }

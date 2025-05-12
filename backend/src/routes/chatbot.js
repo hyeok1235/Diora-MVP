@@ -24,14 +24,16 @@ router.post("/", async (req, res) => {
       const roadAddress = await getRoadAddress(location);
 
       if (roadAddress) {
-        finalQuery = `${query}\n위치 = ${roadAddress}`;
+        finalQuery = `${query}\nroad_address = ${roadAddress}`;
       } else {
-        finalQuery = `${query}\n위치 = ${location}`;
+        finalQuery = `${query}\d위치 = ${location}`;
       }
 
-      if (subwayRoadAddress) {
-        finalQuery = `${finalQuery}\n지하철역명 = ${subwayRoadAddress["name"]}\n지하철역의 주소 = ${subwayRoadAddress["roadAddress"]}`;
-      }
+      console.log(subwayRoadAddress.pageContent);
+
+      // if (subwayRoadAddress) {
+      //   finalQuery = `${finalQuery}\nsubway_info = ${subwayRoadAddress["name"]}\nsubway_address = ${subwayRoadAddress["roadAddress"]}`;
+      // }
     }
 
     const answer = await chain.invoke(finalQuery);
